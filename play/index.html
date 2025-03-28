@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en-US"> <!-- Default lang, will be updated by i18n.js -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Now Playing - Gamers Playground</title> <!-- Will be updated by i18n -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="../js/i18n.js"></script> <!-- Include i18n script (relative path) -->
+    <style>
+        /* Basic styles and dark mode support (same as index.html, including dropdown) */
+        :root {
+            color-scheme: light dark;
+            --bg-light: #ffffff;
+            --text-light: #1f2937;
+            --card-bg-light: #f9fafb;
+            --border-light: #e5e7eb;
+            --iframe-bg-light: #ffffff;
+            --input-bg-light: #ffffff;
+            --input-text-light: #1f2937;
+            --input-border-light: #d1d5db;
+
+
+            --bg-dark: #111827;
+            --text-dark: #f9fafb;
+            --card-bg-dark: #1f2937;
+            --border-dark: #374151;
+            --iframe-bg-dark: #111827;
+            --input-bg-dark: #374151;
+            --input-text-dark: #f9fafb;
+            --input-border-dark: #4b5563;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-light);
+            transition: background-color 0.3s, color 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+        .dark body {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+        }
+        .theme-toggle-button {
+            background-color: var(--card-bg-light);
+            color: var(--text-light);
+            border: 1px solid var(--border-light);
+        }
+        .dark .theme-toggle-button {
+            background-color: var(--card-bg-dark);
+            color: var(--text-dark);
+            border: 1px solid var(--border-dark);
+        }
+         /* Style for the language selector dropdown */
+        #language-selector {
+            background-color: var(--input-bg-light);
+            color: var(--input-text-light);
+            border: 1px solid var(--input-border-light);
+            padding: 0.25rem 1.5rem 0.25rem 0.5rem; /* Adjust padding for arrow */
+            border-radius: 0.375rem; /* rounded-md */
+            font-size: 0.875rem; /* text-sm */
+            line-height: 1.25rem;
+            appearance: none; /* Remove default arrow */
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+        }
+        .dark #language-selector {
+            background-color: var(--input-bg-dark);
+            color: var(--input-text-dark);
+            border: 1px solid var(--input-border-dark);
+             background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+        }
+        #language-selector:focus {
+             outline: 2px solid transparent;
+             outline-offset: 2px;
+             --tw-ring-color: rgb(99 102 241 / 0.5); /* focus:ring-indigo-500 */
+             border-color: rgb(99 102 241); /* focus:border-indigo-500 */
+             box-shadow: 0 0 0 2px var(--tw-ring-color);
+        }
+        #game-container {
+            flex-grow: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background-color: var(--iframe-bg-light);
+        }
+        .dark #game-container {
+             background-color: var(--iframe-bg-dark);
+        }
+        #game-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        header, footer {
+            flex-shrink: 0;
+         }
+         main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+         }
+    </style>
+</head>
+<body class="font-sans antialiased">
+    <header class="bg-white dark:bg-gray-800 shadow-sm sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex-shrink-0 flex items-center">
+                     <a href="/" class="flex items-center">
+                        <svg class="h-8 w-auto text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span id="header-title" class="ml-2 text-xl font-semibold text-gray-900 dark:text-white">Gamers Playground</span>
+                    </a>
+                </div>
+                 <div class="flex items-center space-x-4">
+                    <span id="game-title" class="text-lg font-medium text-gray-700 dark:text-gray-300 hidden sm:block"></span>
+                     <!-- Language Selector Dropdown -->
+                     <select id="language-selector" name="language" aria-label="Select language">
+                        <!-- Options will be populated by JS -->
+                     </select>
+                    <!-- Theme Toggle -->
+                    <button id="theme-toggle" class="theme-toggle-button p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <svg id="theme-icon-light" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg id="theme-icon-dark" class="h-6 w-6 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                 </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow">
+        <div id="game-container">
+            <p id="loading-message" class="text-gray-500 dark:text-gray-400">Loading game...</p>
+        </div>
+    </main>
+
+    <script>
+        const gameContainer = document.getElementById('game-container');
+        const loadingMessage = document.getElementById('loading-message');
+        const gameTitleElement = document.getElementById('game-title');
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIconLight = document.getElementById('theme-icon-light');
+        const themeIconDark = document.getElementById('theme-icon-dark');
+        // Language selector is handled by i18n.js
+
+        // Function to set theme (same as before)
+        const setTheme = (theme) => {
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark');
+                themeIconLight.classList.remove('hidden');
+                themeIconDark.classList.add('hidden');
+                localStorage.setItem('theme', 'dark');
+                themeToggle.setAttribute('aria-label', i18n.t('themeToggleLight'));
+            } else {
+                document.documentElement.classList.remove('dark');
+                themeIconLight.classList.add('hidden');
+                themeIconDark.classList.remove('hidden');
+                localStorage.setItem('theme', 'light');
+                themeToggle.setAttribute('aria-label', i18n.t('themeToggleDark'));
+            }
+        };
+
+        // Load theme from local storage or system preference (same as before)
+        const loadTheme = () => {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedTheme) {
+                setTheme(savedTheme);
+            } else {
+                setTheme(prefersDark ? 'dark' : 'light');
+            }
+        };
+
+        // Theme toggle button event listener (same as before)
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+            setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+        });
+
+        // Function to update UI text based on loaded translations
+        const applyTranslations = () => {
+            document.title = i18n.t('pageTitlePlay');
+            document.getElementById('header-title').textContent = i18n.t('headerTitle');
+            if (loadingMessage) { // Check if loading message still exists
+                loadingMessage.textContent = i18n.t('loadingGame');
+            }
+
+            // Update theme toggle aria-label initially
+            const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+            themeToggle.setAttribute('aria-label', currentTheme === 'dark' ? i18n.t('themeToggleLight') : i18n.t('themeToggleDark'));
+
+            // Load game (needs to happen after translations are applied for error messages)
+            loadGame();
+        };
+
+
+        // Load game function (updated to use i18n for messages)
+        const loadGame = async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const gameId = urlParams.get('gid');
+
+            if (!gameId) {
+                gameContainer.innerHTML = `<p class="text-red-500 text-center">${i18n.t('errorNoGid')}</p>`;
+                return;
+            }
+
+            try {
+                // Path is relative to play/index.html
+                const response = await fetch('../games/map.json');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const games = await response.json();
+                const game = games.find(g => g.id === gameId);
+
+                if (game) {
+                    gameTitleElement.textContent = i18n.t('playingTitle', { gameName: game.name });
+                    gameTitleElement.classList.remove('sm:block');
+                    const iframe = document.createElement('iframe');
+                    iframe.id = 'game-iframe';
+                    iframe.src = `../games/${game.path}/index.html`;
+                    iframe.setAttribute('allowfullscreen', '');
+                    iframe.setAttribute('frameborder', '0');
+
+                    if (loadingMessage) loadingMessage.remove();
+                    gameContainer.innerHTML = '';
+                    gameContainer.appendChild(iframe);
+                } else {
+                    gameContainer.innerHTML = `<p class="text-red-500 text-center">${i18n.t('errorGameNotFound', { gameId: gameId })}</p>`;
+                }
+            } catch (error) {
+                console.error('Error loading game:', error);
+                gameContainer.innerHTML = `<p class="text-red-500 text-center">${i18n.t('errorLoadingGame')}</p>`;
+            }
+        };
+
+        // Initialize theme and then apply translations once i18n is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTheme();
+            // Wait for i18n.init() to complete
+            const checkI18nReady = setInterval(() => {
+                 // Check if supportedLanguages and translations are loaded
+                if (i18n.supportedLanguages.length > 0 && Object.keys(i18n.translations).length > 0) {
+                    clearInterval(checkI18nReady);
+                    i18n.populateLangSelector('language-selector'); // Populate dropdown
+                    applyTranslations(); // Apply text and load game
+                }
+            }, 50);
+        });
+    </script>
+</body>
+</html>

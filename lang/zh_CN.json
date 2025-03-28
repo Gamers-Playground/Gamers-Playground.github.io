@@ -1,0 +1,17 @@
+{
+  "appName": "Gamers Playground",
+  "pageTitleIndex": "Gamers Playground",
+  "pageTitlePlay": "正在游玩 - Gamers Playground",
+  "headerTitle": "Gamers Playground",
+  "libraryTitle": "游戏库",
+  "playButtonText": "点击开始游玩",
+  "errorLoadGames": "无法加载游戏列表。",
+  "footerText": "&copy; 2025 Gamers Playground. 由 Microsoft 顶级工程师倾情打造 (模拟).",
+  "loadingGame": "正在加载游戏...",
+  "playingTitle": "正在玩: {gameName}",
+  "errorNoGid": "错误：未指定游戏 ID (gid)。请返回<a href=\"/\" class=\"text-indigo-600 dark:text-indigo-400 hover:underline\">主页</a>选择一个游戏。",
+  "errorGameNotFound": "错误：找不到 ID 为 \"{gameId}\" 的游戏。请返回<a href=\"/\" class=\"text-indigo-600 dark:text-indigo-400 hover:underline\">主页</a>选择一个有效的游戏。",
+  "errorLoadingGame": "加载游戏时出错。请稍后再试或检查控制台获取详细信息。",
+  "themeToggleLight": "切换到浅色模式",
+  "themeToggleDark": "切换到深色模式"
+}

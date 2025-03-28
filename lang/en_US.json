@@ -1,0 +1,17 @@
+{
+  "appName": "Gamers Playground",
+  "pageTitleIndex": "Gamers Playground",
+  "pageTitlePlay": "Now Playing - Gamers Playground",
+  "headerTitle": "Gamers Playground",
+  "libraryTitle": "Game Library",
+  "playButtonText": "Click to Play",
+  "errorLoadGames": "Could not load the game list.",
+  "footerText": "&copy; 2025 Gamers Playground. Crafted by top Microsoft engineers (simulation).",
+  "loadingGame": "Loading game...",
+  "playingTitle": "Playing: {gameName}",
+  "errorNoGid": "Error: Game ID (gid) not specified. Please return to the <a href=\"/\" class=\"text-indigo-600 dark:text-indigo-400 hover:underline\">homepage</a> to select a game.",
+  "errorGameNotFound": "Error: Game with ID \"{gameId}\" not found. Please return to the <a href=\"/\" class=\"text-indigo-600 dark:text-indigo-400 hover:underline\">homepage</a> to select a valid game.",
+  "errorLoadingGame": "An error occurred while loading the game. Please try again later or check the console for details.",
+  "themeToggleLight": "Switch to Light Mode",
+  "themeToggleDark": "Switch to Dark Mode"
+}
