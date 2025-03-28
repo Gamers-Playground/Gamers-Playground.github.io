@@ -6,7 +6,7 @@
   "libraryTitle": "Game Library",
   "playButtonText": "Click to Play",
   "errorLoadGames": "Could not load the game list.",
-  "footerText": "&copy; 2025 Gamers Playground. Crafted by top Microsoft engineers (simulation).",
+  "footerText": "&copy; 2025 Gamers Playground. By Neuroplexus.",
   "loadingGame": "Loading game...",
   "playingTitle": "Playing: {gameName}",
   "errorNoGid": "Error: Game ID (gid) not specified. Please return to the <a href=\"/\" class=\"text-indigo-600 dark:text-indigo-400 hover:underline\">homepage</a> to select a game.",

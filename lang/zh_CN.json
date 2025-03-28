@@ -6,7 +6,7 @@
   "libraryTitle": "游戏库",
   "playButtonText": "点击开始游玩",
   "errorLoadGames": "无法加载游戏列表。",
-  "footerText": "&copy; 2025 Gamers Playground. 由 Microsoft 顶级工程师倾情打造 (模拟).",
+  "footerText": "&copy; 2025 Gamers Playground. 由 Neuroplex 打造.",
   "loadingGame": "正在加载游戏...",
   "playingTitle": "正在玩: {gameName}",
   "errorNoGid": "错误：未指定游戏 ID (gid)。请返回<a href=\"/\" class=\"text-indigo-600 dark:text-indigo-400 hover:underline\">主页</a>选择一个游戏。",
