@@ -2,7 +2,6 @@
 <html lang="en-US"> <!-- Default lang, will be updated by i18n.js -->
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gamers Playground</title> <!-- Will be updated by i18n -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="js/i18n.js"></script> <!-- Include i18n script -->
@@ -184,7 +183,7 @@
             document.getElementById('library-title').textContent = i18n.t('libraryTitle');
             document.getElementById('footer-text').innerHTML = i18n.t('footerText');
 
-             // Update theme toggle aria-label initially
+            // Update theme toggle aria-label initially
             const currentTheme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
             themeToggle.setAttribute('aria-label', currentTheme === 'dark' ? i18n.t('themeToggleLight') : i18n.t('themeToggleDark'));
 
@@ -193,16 +192,46 @@
                 .then(response => response.json())
                 .then(games => {
                     gameListContainer.innerHTML = ''; // Clear previous list
-                    games.forEach(game => {
-                        const gameCard = `
-                            <a href="/player?gid=${game.id}" class="card block rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg">
-                                <div class="p-6">
-                                    <h2 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white">${game.name}</h2>
-                                    <p class="text-gray-600 dark:text-gray-400 text-sm">${i18n.t('playButtonText')}</p>
-                                </div>
+                    
+                    // Group games by game-id
+                    const gameGroups = games.reduce((acc, game) => {
+                        if (!acc[game['game-id']]) {
+                            acc[game['game-id']] = [];
+                        }
+                        acc[game['game-id']].push(game);
+                        return acc;
+                    }, {});
+
+                    // Create a card for each unique game
+                    Object.values(gameGroups).forEach(variants => {
+                        // Find the preferred language variant or default to first
+                        const preferredLang = localStorage.getItem('preferredLang') || 'en_US';
+                        const defaultVariant = variants.find(v => v.lang === preferredLang) || variants[0];
+                        
+                        const gameCard = document.createElement('div');
+                        gameCard.className = 'card relative block rounded-lg shadow-md overflow-hidden transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg';
+                        
+                        // Create language selector if multiple variants exist
+                        const langSelector = variants.length > 1 ? `
+                            <select class="absolute top-2 right-2 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm"
+                                    onchange="window.location.href='/player?gid=' + this.value">
+                                ${variants.map(v => `
+                                    <option value="${v.id}" ${v.id === defaultVariant.id ? 'selected' : ''}>
+                                        ${i18n.supportedLanguages.find(l => l.code === v.lang)?.name || v.lang}
+                                    </option>
+                                `).join('')}
+                            </select>
+                        ` : '';
+
+                        gameCard.innerHTML = `
+                            <a href="/player?gid=${defaultVariant.id}" class="block p-6">
+                                <h2 class="text-xl font-semibold mb-2 text-gray-900 dark:text-white pr-24">${defaultVariant.name}</h2>
+                                <p class="text-gray-600 dark:text-gray-400 text-sm">${i18n.t('playButtonText')}</p>
                             </a>
+                            ${langSelector}
                         `;
-                        gameListContainer.innerHTML += gameCard;
+
+                        gameListContainer.appendChild(gameCard);
                     });
                 })
                 .catch(error => {

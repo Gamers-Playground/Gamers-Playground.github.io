@@ -1,12 +1,22 @@
 [
     {
         "name": "Worlds Hardest Game",
-        "id": "worlds-hardest",
-        "path": "worldshardestgame"
+        "id": "vw2c1",
+        "id-alias": [
+            "worlds-hardest"
+        ],
+        "game-id": "worlds-hardest",
+        "path": "worldshardestgame",
+        "lang": "en_US"
     },
     {
         "name": "世界上最难的游戏",
-        "id": "worlds-hardest-cn",
-        "path": "worldshardestgame-cn"
+        "id": "v9c0z",
+        "id-alias": [
+            "worlds-hardest-cn"
+        ],
+        "game-id": "worlds-hardest",
+        "path": "worldshardestgame-cn",
+        "lang": "zh_CN"
     }
 ]
