@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Now Playing - Gamers Playground</title> <!-- Will be updated by i18n -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="../js/i18n.js"></script> <!-- Include i18n script (relative path) -->
+    <script src="/js/i18n.js"></script> <!-- Include i18n script (relative path) -->
     <style>
         /* Basic styles and dark mode support (same as index.html, including dropdown) */
         :root {
@@ -221,7 +221,7 @@
 
             try {
                 // Path is relative to play/index.html
-                const response = await fetch('../games/map.json');
+                const response = await fetch('/games/map.json');
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -233,7 +233,7 @@
                     gameTitleElement.classList.remove('sm:block');
                     const iframe = document.createElement('iframe');
                     iframe.id = 'game-iframe';
-                    iframe.src = `../games/${game.path}/index.html`;
+                    iframe.src = `/games/${game.path}/index.html`;
                     iframe.setAttribute('allowfullscreen', '');
                     iframe.setAttribute('frameborder', '0');
 
